@@ -270,11 +270,25 @@ And that's the basic idea.
 I might set up a TypeCache service in the Utilities collection, if only to cut down on some of the Reflection that has to happen when instantiating Modules and Dependencies.  There's a good bit of Assembly Scanning going on, and if I can set things up so that it only has to happen once when the app Starts, that'll make me pretty happy.
 
 ### ModuleSettings
-As of this writing, I've not solved the ModuleSettings story.  I visualize another complex property, perhaps within the Implementation specification of each Module or Dependency that holds a set of Key-Value pairs that would be bound to some "Options" type that's specific to the Implementation classes.  
+Each Module can receive a collection of Settings.  These are specified within the Implementation node of the Module Specification in the appSettings.json file.  
 
-I'll need to include some facility to point the Options binder to additional ConfigurationSources for storage and retrieval of more variable (Environment) and/or sensitive (Secret) configuration values.
+Keep in mind that only the non-volatile and non-sensitive configuration values should be stored in this structure.  For Environment-Volatile, or Secret values, you can import those to the .Net Configuration objects as normal (.UseEnvironmentVariables(), .UseKeyVault, etc....) and use an "Externalization" token in appSettings to tell the ServiceBuilder what Configuration Key to look for that contains the "Real" value.
 
-I'll update this document once I've told that story.  (It'll be "Coming Soon<sup>TM</sup>")
+```json
+...
+"Implementation":{
+    "Source":"Module",
+    "Assembly":"Managers.Svc1",
+    "ServiceOptions":{
+        "StringOption":"SomeString",
+        "IntOption": 5,
+        "SomeSecret":"EXT:SQLDb:ConnectionString"
+    }
+...
+```
+In that json snippet, the "SomeSecret" node value is "EXT:SQLDb:ConnectionString".  
+When the Module's Options object is constructed, the code knows to check the ambient COnfiguration object for the "SQLDb:ConnectionString" setting, which could be imported from Environment Vars, a Secret Store, or whatever.
+
 
 ### More Interaction Kinds, and More Component Behaviors
 
