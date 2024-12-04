@@ -8,7 +8,7 @@ This path works nicely in a .Net development flow.  It likely maps just as well 
 - You'll use that selected use case as a "Vertical Slice" to prove and refine your Static Design.
 3. Create the solution's folder and project structure for the Static Design parts required for the selected Vertical Slice.
 4. Obtain the iFX code.
-- Fork this code repository, and change the Project Name and namespace declarations to match your organization.  Keep it as a Project Reference for now, until you decide to adopt and adapt it to your company's needs.
+- Fork or download this code repository, and change the Project Name and namespace declarations to match your organization.  Add it to your solution, and keep it as a Project Reference for now, until you decide to adopt and adapt it to your company's needs.
 5. Add the public Interfaces and Data classes to the appropriate projects.
 6. Add a project reference from each of your application's projects to [YourCompany].iFX
 - Use the "Marker" interfaces declared in ThatDeveloperDad.iFX.ServiceModel.Taxonomy to apply the component taxonomy to your system's components.
