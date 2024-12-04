@@ -262,15 +262,8 @@ Here's where you'll set up the Logging that would be injected into your Modules.
     }
 ```
 
-And that's the basic idea.
-
-## Things I've not gotten to yet
-
-### Type Caching
-I might set up a TypeCache service in the Utilities collection, if only to cut down on some of the Reflection that has to happen when instantiating Modules and Dependencies.  There's a good bit of Assembly Scanning going on, and if I can set things up so that it only has to happen once when the app Starts, that'll make me pretty happy.
-
-### ModuleSettings
-Each Module can receive a collection of Settings.  These are specified within the Implementation node of the Module Specification in the appSettings.json file.  
+### Module and Dependency Settings
+Each Module can receive a collection of Settings.  These are specified within the Implementation node of the Module Specification in the appSettings.json file, and read into an "Options" class that's declared in the Implementation assembly, and expected as a constructor parameter.  The Property Names on that Options class must match the Keys used in the ServiceOptions config node, and that Options class must implement IServiceOptions.    
 
 Keep in mind that only the non-volatile and non-sensitive configuration values should be stored in this structure.  For Environment-Volatile, or Secret values, you can import those to the .Net Configuration objects as normal (.UseEnvironmentVariables(), .UseKeyVault, etc....) and use an "Externalization" token in appSettings to tell the ServiceBuilder what Configuration Key to look for that contains the "Real" value.
 
@@ -289,6 +282,12 @@ Keep in mind that only the non-volatile and non-sensitive configuration values s
 In that json snippet, the "SomeSecret" node value is "EXT:SQLDb:ConnectionString".  
 When the Module's Options object is constructed, the code knows to check the ambient Configuration object for the "SQLDb:ConnectionString" setting, which could be imported from Environment Vars, a Secret Store, or whatever.
 
+And that's the basic idea.
+
+## Things I've not gotten to yet
+
+### Type Caching
+I might set up a TypeCache service in the Utilities collection, if only to cut down on some of the Reflection that has to happen when instantiating Modules and Dependencies.  There's a good bit of Assembly Scanning going on, and if I can set things up so that it only has to happen once when the app Starts, that'll make me pretty happy.
 
 ### More Interaction Kinds, and More Component Behaviors
 
