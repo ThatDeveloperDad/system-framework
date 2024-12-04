@@ -10,7 +10,7 @@ This path works nicely in a .Net development flow.  It likely maps just as well 
 4. Obtain the iFX code.
 - Fork or download this code repository, and change the Project Name and namespace declarations to match your organization.  Add it to your solution, and keep it as a Project Reference for now, until you decide to adopt and adapt it to your company's needs.
 5. Add the public Interfaces and Data classes to the appropriate projects.
-6. Add a project reference from each of your application's projects to [YourCompany].iFX
+6. Add a project reference to to [YourCompany].iFX in each of your application's projects.
 - Use the "Marker" interfaces declared in ThatDeveloperDad.iFX.ServiceModel.Taxonomy to apply the component taxonomy to your system's components.
 - This is shown in the [Component Classification](#component-classification) section of this document.
 7. Set up the architecture configuration in the "Application Host" project(s).  This is your Console App, Web App, whatever you roll with.
