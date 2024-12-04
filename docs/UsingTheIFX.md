@@ -287,7 +287,7 @@ Keep in mind that only the non-volatile and non-sensitive configuration values s
 ...
 ```
 In that json snippet, the "SomeSecret" node value is "EXT:SQLDb:ConnectionString".  
-When the Module's Options object is constructed, the code knows to check the ambient COnfiguration object for the "SQLDb:ConnectionString" setting, which could be imported from Environment Vars, a Secret Store, or whatever.
+When the Module's Options object is constructed, the code knows to check the ambient Configuration object for the "SQLDb:ConnectionString" setting, which could be imported from Environment Vars, a Secret Store, or whatever.
 
 
 ### More Interaction Kinds, and More Component Behaviors
