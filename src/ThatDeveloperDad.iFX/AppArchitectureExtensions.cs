@@ -88,10 +88,11 @@ public static class AppArchitectureExtensions
         
         Type contract = TypeHelper.LoadType(module.Contract, module.ContractAssembly);
         string contractArchetype = 
-            TypeHelper.GetArchetype(contract)?.Name??"NonSystemComponent"
+            TypeHelper.GetArchetype(contract)?.Name??"NonSystemComponent";
+
+        contractArchetype = contractArchetype
             .Replace("I", string.Empty)
             .Replace("Service", string.Empty);
-
 
         // Top-Level modules may be one of the following:
         // IManagerService, IClientService.

@@ -216,6 +216,13 @@ public class ServiceProvider<TServiceContract>
     {
         get
         {
+            if(Lifetime != ServiceLifetime.Singleton)
+            {
+                // If the service has not been specified as a Singleton,
+                // return null or default.
+                return default;
+            }
+
             if(_singletonInstance == null)
             {
                 //Instantiate Singleton.
@@ -234,6 +241,12 @@ public class ServiceProvider<TServiceContract>
         }
     }
 
+    /// <summary>
+    /// Uses the provided serviceStore to obtain the requested ImplementationType.
+    /// </summary>
+    /// <param name="implementationType"></param>
+    /// <param name="serviceStore"></param>
+    /// <returns></returns>
     private object? GetServiceFrom(
         Type implementationType, 
         IServiceProvider serviceStore)
@@ -282,6 +295,17 @@ public class ServiceProvider<TServiceContract>
         return module;
     }
 
+    /// <summary>
+    /// Adds the specified Dependencies for the current Service to the local
+    /// Services collection.
+    /// 
+    /// Dependencies that are specified as "Shared" are brought in from the sharedServices
+    /// </summary>
+    /// <param name="moduleSpec"></param>
+    /// <param name="sharedServices"></param>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
+    /// <exception cref="NotSupportedException"></exception>
     protected override IServiceProvider ConfigureServices(
         ModuleSpecification moduleSpec, 
         IServiceProvider sharedServices,
@@ -310,17 +334,10 @@ public class ServiceProvider<TServiceContract>
             else if(dependency.Implementation.Source == "Module")
             {
                 Type? dependencyType = TypeHelper.LoadType(
-                    dependency.Contract, 
+                    dependency.Contract,
                     dependency.ContractAssembly);
-                if(TypeHelper.ReferenceIsValid(Contract, dependencyType) == false)
-                {
-                    var contractArchetype = TypeHelper.GetArchetype(Contract)?.Name??"NonSystemComponent";
-                    var dependencyArchetype = TypeHelper.GetArchetype(dependencyType)?.Name??"NonSystemComponent";
-                    
-                    string error = $"{contractArchetype} Modules like {Contract.Name} may not depend on {dependencyArchetype} Modules such as {dependencyType.Name}";
-                    
-                    throw new InvalidOperationException(error);
-                }
+                
+                EnforceTaxonomyRules(dependencyType);
 
                 dependency.AddGlobalBehaviors(globalBehaviors);
                 var provider = ServiceBuilder.BuildService(dependency, sharedServices, configuration, _logger);
@@ -338,6 +355,25 @@ public class ServiceProvider<TServiceContract>
         moduleServices = RegisterModule(moduleServices);
 
         return moduleServices.BuildServiceProvider();
+    }
+
+    /// <summary>
+    /// Ensures that the specified Dependency archetype is appropriate
+    /// for the archetype embodied by the Module's Contract.
+    /// </summary>
+    /// <param name="dependencyType">The Interface for the requested Dependency.</param>
+    /// <exception cref="InvalidOperationException">Thrown if an incorrect dependency has been specified.</exception>
+    private void EnforceTaxonomyRules(Type dependencyType)
+    {
+        if (TypeHelper.ReferenceIsValid(Contract, dependencyType) == false)
+        {
+            var contractArchetype = TypeHelper.GetArchetype(Contract)?.Name ?? "NonSystemComponent";
+            var dependencyArchetype = TypeHelper.GetArchetype(dependencyType)?.Name ?? "NonSystemComponent";
+
+            string error = $"{contractArchetype} Modules like {Contract.Name} may not depend on {dependencyArchetype} Modules such as {dependencyType.Name}";
+
+            throw new InvalidOperationException(error);
+        }
     }
 
     private IServiceCollection ConfigureSettings(
@@ -377,6 +413,14 @@ public class ServiceProvider<TServiceContract>
         return services;
     }
 
+    /// <summary>
+    /// Populates the properties on the options instance from the provided 
+    /// ServiceSettings section and (if needed, ambient Configuration.
+    /// </summary>
+    /// <param name="optionsInstance"></param>
+    /// <param name="serviceSettings"></param>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
     private object? PopulateProperties(object? optionsInstance, 
         IConfigurationSection serviceSettings,
         IConfiguration configuration)
@@ -446,8 +490,8 @@ public class ServiceProvider<TServiceContract>
                 _logger?.LogWarning($"Could not load behavior {behaviorName.Name} from {behaviorName.AssemblyName}");
                 continue;
             }
-            var behavior = (IOperationBehavior?)GetServiceFrom(behaviorType, utilityProvider);
 
+            var behavior = (IOperationBehavior?)GetServiceFrom(behaviorType, utilityProvider);
             if(behavior == null)
             {
                 _logger?.LogWarning($"Could not create behavior {behaviorName.Name} from {behaviorName.AssemblyName}");
