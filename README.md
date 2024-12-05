@@ -18,7 +18,7 @@ Finally, this method allows us to delegate service construction across members o
 
 
 ## Benefits
-Our system's components become much more cohesive and independent.  Because of the structured way in which dependency graphs are isolated from each other, accidental leakage accross domain boundaries becomes much more difficult and easier to catch during review.
+Our system's components become much more cohesive and independent.  Because of the structured way in which dependency graphs are isolated from each other, accidental leakage across domain boundaries becomes much more difficult and easier to catch during review.
 
 Incorrect component dependencies are identified during app start; It won't load if you've made inappropriate connections between component archetypes.
 
