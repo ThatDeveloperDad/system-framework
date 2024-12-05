@@ -8,9 +8,9 @@ This path works nicely in a .Net development flow.  It likely maps just as well 
 - You'll use that selected use case as a "Vertical Slice" to prove and refine your Static Design.
 3. Create the solution's folder and project structure for the Static Design parts required for the selected Vertical Slice.
 4. Obtain the iFX code.
-- Fork this code repository, and change the Project Name and namespace declarations to match your organization.  Keep it as a Project Reference for now, until you decide to adopt and adapt it to your company's needs.
+- Fork or download this code repository, and change the Project Name and namespace declarations to match your organization.  Add it to your solution, and keep it as a Project Reference for now, until you decide to adopt and adapt it to your company's needs.
 5. Add the public Interfaces and Data classes to the appropriate projects.
-6. Add a project reference from each of your application's projects to [YourCompany].iFX
+6. Add a project reference to to [YourCompany].iFX in each of your application's projects.
 - Use the "Marker" interfaces declared in ThatDeveloperDad.iFX.ServiceModel.Taxonomy to apply the component taxonomy to your system's components.
 - This is shown in the [Component Classification](#component-classification) section of this document.
 7. Set up the architecture configuration in the "Application Host" project(s).  This is your Console App, Web App, whatever you roll with.
@@ -262,19 +262,32 @@ Here's where you'll set up the Logging that would be injected into your Modules.
     }
 ```
 
+### Module and Dependency Settings
+Each Module can receive a collection of Settings.  These are specified within the Implementation node of the Module Specification in the appSettings.json file, and read into an "Options" class that's declared in the Implementation assembly, and expected as a constructor parameter.  The Property Names on that Options class must match the Keys used in the ServiceOptions config node, and that Options class must implement IServiceOptions.    
+
+Keep in mind that only the non-volatile and non-sensitive configuration values should be stored in this structure.  For Environment-Volatile, or Secret values, you can import those to the .Net Configuration objects as normal (.UseEnvironmentVariables(), .UseKeyVault, etc....) and use an "Externalization" token in appSettings to tell the ServiceBuilder what Configuration Key to look for that contains the "Real" value.
+
+```json
+...
+"Implementation":{
+    "Source":"Module",
+    "Assembly":"Managers.Svc1",
+    "ServiceOptions":{
+        "StringOption":"SomeString",
+        "IntOption": 5,
+        "SomeSecret":"EXT:SQLDb:ConnectionString"
+    }
+...
+```
+In that json snippet, the "SomeSecret" node value is "EXT:SQLDb:ConnectionString".  
+When the Module's Options object is constructed, the code knows to check the ambient Configuration object for the "SQLDb:ConnectionString" setting, which could be imported from Environment Vars, a Secret Store, or whatever.
+
 And that's the basic idea.
 
 ## Things I've not gotten to yet
 
 ### Type Caching
 I might set up a TypeCache service in the Utilities collection, if only to cut down on some of the Reflection that has to happen when instantiating Modules and Dependencies.  There's a good bit of Assembly Scanning going on, and if I can set things up so that it only has to happen once when the app Starts, that'll make me pretty happy.
-
-### ModuleSettings
-As of this writing, I've not solved the ModuleSettings story.  I visualize another complex property, perhaps within the Implementation specification of each Module or Dependency that holds a set of Key-Value pairs that would be bound to some "Options" type that's specific to the Implementation classes.  
-
-I'll need to include some facility to point the Options binder to additional ConfigurationSources for storage and retrieval of more variable (Environment) and/or sensitive (Secret) configuration values.
-
-I'll update this document once I've told that story.  (It'll be "Coming Soon<sup>TM</sup>")
 
 ### More Interaction Kinds, and More Component Behaviors
 
