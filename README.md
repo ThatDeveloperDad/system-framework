@@ -8,6 +8,10 @@ The .Net project, "ThatDeveloperDad.iFX" contains the code that formalizes these
 
 More Detailed essays and Framework Documentation can be found in the docs folder, at the [Table of Contents](./docs/_ToC.md)
 
+Non-Trivial examples of this framework in use can be seen throughout the codebase in this repository: [ThatDeveloperDad/TDMF_admin](https://github.com/ThatDeveloperDad/TDMF_admin)  
+
+That repository holds the work in progress Administrative subsystem that will handle the boring administrative aspects of running The DM's Familiar as a Subscription Product.
+
 ## Features and Goals
 
 The first goal with this framework was to solve a problem I've observed with the Dependency Injection methods built into .Net Core.  We currently had to register every dependency of every service within that "front-most" service container.  This created risk that our Designed Abstractions would leak across vertical slices or domain boundaries and into components that were never intended to consume them.  The composition engine within the framework allows us to more formally describe that hierarchy of dependency, and organize our Systems into services where each "top-level" service is responsible for its own dependency collection.
@@ -16,6 +20,17 @@ My secondary goal was to improve the experience when adding in cross cutting con
 
 Finally, this method allows us to delegate service construction across members of a team, and allows the individual services to be constructed in isolation, being integrated with the system's codebase as they're completed.  As long as the Detailed Design specification for an individual service is followed, additional change to the service's code will be minimal during this integration with the wider codebase.
 
+### Optional Capabilities (Added 12/13/2024)  
+I'll be adding articles to the docs folder for these new framework features soon.  It's late, and I've been working at this stuff all day, and "I am le tired!"  
+- **Generic Collection Filtering:**  
+Implemented in the `/CollectionUtilities` namespace.  
+    - This allows us to create flexible, Generic `Filter<T>` that can be applied to `ICollection<T>` instances.  
+    - These Filters CAN be automatically converted from one Type to another, provided both Types represent idioms of the DomainEntity. (see Generic Type Mapping)
+
+- **Generic Type Mapping**  
+Implemented in the `/DomainUtilities` namespace.  
+    - Using custom Attributes defined in the `/DomainUtilities/Attributes` namespace, we can designate Data Contracts declared for any of our Archetypal Services as local representations of identified *DomainEntities*.
+    - When a service's data contract(s) inherits from `IdiomaticType`, and decorated with the `DomainEntityAttribute` at the class level, and has at least one property decorated with the `EntityAttribute` attribute, we gain the ability to automatically map any properties that are so decorated between different classes that share a DomainEntity name.
 
 ## Benefits
 Our system's components become much more cohesive and independent.  Because of the structured way in which dependency graphs are isolated from each other, accidental leakage across domain boundaries becomes much more difficult and easier to catch during review.
