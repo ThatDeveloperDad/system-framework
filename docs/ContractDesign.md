@@ -125,6 +125,11 @@ It also makes our Operation Contracts MUCH easier to read and understand later o
 
 Pretty Nice!
 
+One Last Point about data and operation contracts:  Within even a simple system or sub-system, (or vertical slice,) you're GOING to get divergence between how the behaviors and their data expectations are expressed.  Don't skimp out and try to share one set of interfaces and data contracts throughout a subsystem.  That will end only with cursing.  
+
+Therefore:  
+***Each component must define its own formal contracts for its behavior and data requirements.***
+
 ## So where should I put these contracts?
 
 There's a couple places you could add these contracts within your solution structure.  
@@ -207,7 +212,7 @@ Here's a sample solution structure I fall back on over and over again:  (Use wha
 
 ** A note about the iFX projects:**  
 If you have a company-wide internal framework, it's likely a good idea to turn that into a nuget package, and host it in a private company package repository.  This keeps people from going in a "tweaking" the source of your org's framework.  
-* Company-Wide iFX should avoid specifying Domain concepts.
+* Company-Wide iFX must avoid specifying Domain concepts.
 * Company-Wide iFX is for standardizing code patterns used throughout the organization's code bases.
 * Company-Wide iFX should be curated by an engineering group that will "own" that framework.
 
