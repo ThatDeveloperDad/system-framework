@@ -38,12 +38,12 @@ For now, I've implemented the simplest possible proxy, I call it the Passthrough
 Behind the scenes, the components you code get wrapped in "Module Providers" that take care of each component's dependency graph and configuration.  When I register a ModuleProvider, I also add the standard "services.AddScoped<IContract>" stuff with a little bit of added magic.  
 
 When your classes get requested from the DI service provider, it calls a "factory method" on the ModuleProvider for that service that:  
-1. Obtains the properly configured instance of the configured implementation type.
+1. Obtains the fully configured instance of the configured implementation type.
 2. Wraps it in a PassthroughProxy
-3. Returns that PassethroughProxy as the "service" that satisfies the dependency contract.
+3. Returns that PassthroughProxy as the "service" that satisfies the dependency contract.
 
 ***What's so special about this PassthroughProxy?***
-The PassthroughProxy class itself has a method called "AddBehavior" which accepts an IOperationBehavior instance, and optionally, a method name to which the Behavior would apply.
+The PassthroughProxy class itself has a method called "AddBehavior" which accepts an IOperationBehavior instance, and optionally a method name to which the Behavior would apply.
 
 An IOperationBehavior describes two methods:  
 * OnMethodEntry:  Code in ths method executes BEFORE the component call is made.
@@ -52,6 +52,7 @@ An IOperationBehavior describes two methods:
 The PassthroughProxy can have a collection of these behaviors, each of which is inserted into the call chain around your component invocation.
 
 ***Warning**: We're not NESTING these behaviors just yet, so I've not added any kind of ordering facility within the Behaviors collection*
-While the behaviors receive a "MethodContext" object, that MethodContext should currently be used only for reference within the Behavior, and not used to transform inputs or outputs.
+While the behaviors receive a "MethodContext" object, that MethodContext should currently be used only for reference within the Behavior, and not used to transform inputs or outputs.  
+This evolution of the concept may come in time, but it's not a priority item right now.
 
 I've included a sample "CallTimerBehavior" in the Utilities namespace that demonstrates what this concept can do for us.
