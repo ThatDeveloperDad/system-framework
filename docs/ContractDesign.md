@@ -1,8 +1,10 @@
 [Table of Contents](./_ToC.md)
 
-# Contract Design
+# Detailed Design - Data and Service Contracts
 
 This is where we describe what each of our components does, and "how" we need to talk to them, in terms of what kinds of input the component features require, and what we can expect to receive back from those features when we invoke them.
+
+***Note:*** With the addition of the (optional) DomainUtilities namespace and its mapping capability, I need to update this document to include the additional considerations when using *Conceptual* Domain Entities in your application.
 
 ---
 
