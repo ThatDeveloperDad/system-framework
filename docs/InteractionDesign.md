@@ -1,5 +1,6 @@
 [Table of Contents](./_ToC.md)
-# Interaction Design
+# Detailed Design - Component Interactions
+## "Have your people talk to my people..."  ***PROXY MADNESS!!!***
 ---
 For now, we're not going to talk about complex topics like Message based communication.  Instead, we'll focus on the baseline interaction pattern:  Direct component invocation, but marshalled through ***Proxies***.
 
