@@ -7,6 +7,9 @@ This is probably the hardest part to wrap your brain around.  I haven't found a 
 
 So instead, I'll explain the What and the Why.
 
+### Before I dive into this...
+My goal here isn't to fully explain Functional Decomposition vs. Volatility based Decomposition.  There are people who are FAR smarter than me that have written books and given talks about this for decades.  
+
 ### TLDR:
 Identifying the "Chunks" of your system by what they do is called Functional Decomposition, and usually leads to scenarios where you have to change many parts of your application whenever some detail in your system needs to be modified in some way.  You end up in a place where you're always playing catch-up and dealing with *"Huh, I didn't expect THIS to affect THAT..."*  (I've been there, you've been there.  We've all been there.)
 
