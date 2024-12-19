@@ -68,7 +68,7 @@ Next, because you remember Last Time... You realize that the ACTIVITIES around T
 
 You've once again hidden the Area that's Subject to Change from the rest of the system.
 
-This is Volatility based Decomposition.
+This is the snowflake on the very tippy top of Volatility based Decomposition.  It goes MUCH deeper than my contrived example here.
 
 ## Sounds sweet... Tell me more?
 Let's start with the Why behind Volatility Decomp.
