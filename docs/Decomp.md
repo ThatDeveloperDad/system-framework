@@ -10,6 +10,15 @@ So instead, I'll explain the What and the Why.
 ### Before I dive into this...
 My goal here isn't to fully explain Functional Decomposition vs. Volatility based Decomposition.  There are people who are FAR smarter than me that have written books and given talks about this for decades.  
 
+All I hope to accomplish here is to introduce the CONCEPT, and perhaps plant the seeds of curiosity that you can water with a little bit of internet searching.  (Look up *"Righting Software" by Juval Lowy* and then follow the trail down the YouTube rabbit hole.)
+
+At the end of the day, we want a software system that:  
+1.  Can be delivered on time.
+2.  Can be delivered with quality.
+3.  Building it and running it doesn't break the bank.
+
+Extra Special Bonus Points if you can build a system that can be changed as needed without having to burn it all to the ground and start from scratch every time Jerry from Marketing comes up with a Hot New Thing<sup>tm</sup>
+
 ### TLDR:
 Identifying the "Chunks" of your system by what they do is called Functional Decomposition, and usually leads to scenarios where you have to change many parts of your application whenever some detail in your system needs to be modified in some way.  You end up in a place where you're always playing catch-up and dealing with *"Huh, I didn't expect THIS to affect THAT..."*  (I've been there, you've been there.  We've all been there.)
 
