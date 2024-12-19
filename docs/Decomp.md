@@ -22,7 +22,13 @@ Extra Special Bonus Points if you can build a system that can be changed as need
 ### TLDR:
 Identifying the "Chunks" of your system by what they do is called Functional Decomposition, and usually leads to scenarios where you have to change many parts of your application whenever some detail in your system needs to be modified in some way.  You end up in a place where you're always playing catch-up and dealing with *"Huh, I didn't expect THIS to affect THAT..."*  (I've been there, you've been there.  We've all been there.)
 
-Instead, with a little bit of extra thought at the start, we can identify the general Activities that are performed within the system, and come up with ways to describe those generalized activities that DON'T change in material ways that would make us update code in all kinds of unexpected places.  Then, we stitch those generalized components together with code that we expect to experience change, and the whole thing becomes much more stable.  This is the essence of Volatility Decomposition.
+Instead, with a little bit of extra thought at the start, we can identify that everything Jerry from Marketing wants, and Fred from Accounting needs, and Mary from HR has said "Would be a big help" can be snapped together if instead of spending our time grinding out web pages for Jerry's Wacky Wednesday Deals, and Fred's ever changing Report needs, we made a small handful of reuseable "interlocking plastic bricks" and snapped those together to deliver Jerry's Wacky Deals, that new report Fred's screaming about, and the onboarding automation for Mary.  (She brings cookies when we make stuff for her.)  
+
+Then, when Jerry's nonsense moves to Tuesdays during the 2nd and 4th week of the month (but only between february and December,) we reconcfigure the way we talk to the scheduling component in the Marketing subsystem.  Fred's special exceptions can change weekly, as they do, but the stuff that builds those exception reports lives all by itself, away from the rest of the code.  
+
+Mary's automation became a PowerShell script and we don't have to worry about it again until next year.
+
+This is the essence of Volatility Based Decomposition:  We don't code FEATURES.  We code Consumable Capabilities, and then easily combine those to create the features that the People In Suits pay us for.
 
 ## Functional Decomposition  
 This is likely the kind of application decomp you're most used to.  You need a "screen", that'll accept a bunch of values, and you need a place to put those values so you can do something with them later.  
